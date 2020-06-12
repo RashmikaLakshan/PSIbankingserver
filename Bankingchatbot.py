@@ -352,19 +352,19 @@ def response(messageText, userId):
         if tag == 'transfer':
             if package_management.checkjoin(userId):
                 context[userId] = {'model':'transfer'}
-                return get_response(tag) +"\nPlease enter the beneficiary's account number\n\nYou may enter 'quit' to exit out of any ongoing action."
+                return get_response(tag) +"\nPlease enter the beneficiary's account number\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
             
 
         elif tag == 'payment':
             if package_management.checkjoin(userId):
                 context[userId] = {'model':'payment'}
-                return get_response(tag) + "\n\nYou may enter 'quit' to exit out of any ongoing action."
+                return get_response(tag) + "\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
         
 
         elif tag in ['complain_behaviour','complain_management','complain_facility','complain_wasting']:
             if package_management.checkjoin(userId):
                 context[userId] = {'model':'complain', 'type': tag}
-                return get_response(tag) + "\n\nYou may enter 'quit' to exit out of any ongoing action."
+                return get_response(tag) + "\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
 
 
         elif tag == 'history':
@@ -409,7 +409,7 @@ def response(messageText, userId):
         
 
         context[userId] = {'model':'joinaccounts'}
-        return "First, You have to connect with your bank account. Otherwise this action is denied\n\nWhat is your bank account number ?\n\nYou may enter 'quit' to exit out of any ongoing action."
+        return "First, You have to connect with your bank account. Otherwise this action is denied\n\nWhat is your bank account number ?\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
     
     except :
         return "Error has occured with the Banking server. Sorry about that!"
