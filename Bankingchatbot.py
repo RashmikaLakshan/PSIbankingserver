@@ -409,7 +409,7 @@ def response(messageText, userId):
         
 
         context[userId] = {'model':'joinaccounts'}
-        return "First, You have to connect with your bank account. Otherwise this action is denied\n\nWhat is your bank account number ?"
+        return "First, You have to connect with your bank account. Otherwise this action is denied\n\nWhat is your bank account number ?\n\nYou may enter 'quit' to exit out of any ongoing action."
     
     except :
         return "Error has occured with the Banking server. Sorry about that!"

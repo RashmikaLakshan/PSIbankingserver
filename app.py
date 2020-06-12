@@ -48,6 +48,7 @@ def chatbotReply():
     )
     ident = json.dumps(datetime.datetime.now(), default=date_handler).strip('"')
     # return jsonify({"userId": 1, "id": ident, "message": reply, "isBot": True, "context": context}), 200
+    write_message(ident, userId, reply, True, datetime.datetime.now())
     return jsonify({"userId": 1, "id": ident, "message": reply, "isBot": True}), 200
     
 @app.route('/banking/messages/<user_id>', methods=["GET"])
