@@ -19,7 +19,7 @@ import sys
 # import created functions and files
 from email_sender import verification_key_passer
 import extractor
-import package_management
+import transaction_management
 
 # machine learning
 import nltk
@@ -178,7 +178,7 @@ def moneytrasferprocess(messageText, userId):
         if amount == '':
             return "Amount should be a number. Please re-enter it"
         context[userId]['amount'] = float(amount)
-        data = package_management.getpersonal(userId)
+        data = transaction_management.getpersonal(userId)
         context[userId]['code'] =  verification_key_passer(data['email'], data['first_name'])
         return "Please check your email and enter the verification key.."
     else:
@@ -187,7 +187,7 @@ def moneytrasferprocess(messageText, userId):
         if int(code) != context[userId]['code']:
             return "Verification key is invalid. Please re-enter it"
 
-    boolean,reply,repindx = package_management.dotransfer(userId,context[userId])
+    boolean,reply,repindx = transaction_management.dotransfer(userId,context[userId])
 
     if boolean:
         del context[userId]
@@ -235,7 +235,7 @@ def paymentprocess(messageText, userId):
         if amount == '':
             return "Amount should be a number. Please re-enter it"
         context[userId]['amount'] = float(amount)
-        data = package_management.getpersonal(userId)
+        data = transaction_management.getpersonal(userId)
         context[userId]['code'] =  verification_key_passer(data['email'], data['first_name'])
         return "Please check your email and enter the verification key.."
 
@@ -245,7 +245,7 @@ def paymentprocess(messageText, userId):
         if int(code) != context[userId]['code']: 
             return "Verification key is invalid. Please re-enter it"
     # print(context[userId])
-    boolean,reply,repindx = package_management.dopayment(userId,context[userId])
+    boolean,reply,repindx = transaction_management.dopayment(userId,context[userId])
 
     if boolean:
         del context[userId]
@@ -274,7 +274,7 @@ def complainprocess(messageText, userId):
         description = messageText
         context[userId]['description'] = description
 
-    boolean,reply,repindx = package_management.reportcomplain(context[userId])
+    boolean,reply,repindx = transaction_management.reportcomplain(context[userId])
 
     if boolean :
         del context[userId]   
@@ -308,7 +308,7 @@ def joinaccprocess(messageText, userId):
         nic = extractor.getNumber(pos)
         context[userId]['nic'] = nic
     # print(context[userId])
-    boolean,reply,repindx = package_management.loginaccount(userId,context[userId])
+    boolean,reply,repindx = transaction_management.loginaccount(userId,context[userId])
     
     if boolean:
         del context[userId]
@@ -350,26 +350,26 @@ def response(messageText, userId):
 
 
         if tag == 'transfer':
-            if package_management.checkjoin(userId):
+            if transaction_management.checkjoin(userId):
                 context[userId] = {'model':'transfer'}
                 return get_response(tag) +"\nPlease enter the beneficiary's account number\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
             
 
         elif tag == 'payment':
-            if package_management.checkjoin(userId):
+            if transaction_management.checkjoin(userId):
                 context[userId] = {'model':'payment'}
                 return get_response(tag) + "\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
         
 
         elif tag in ['complain_behaviour','complain_management','complain_facility','complain_wasting']:
-            if package_management.checkjoin(userId):
+            if transaction_management.checkjoin(userId):
                 context[userId] = {'model':'complain', 'type': tag}
                 return get_response(tag) + "\n\n<<You may enter 'quit' to exit out of any ongoing action.>>"
 
 
         elif tag == 'history':
-            if package_management.checkjoin(userId):
-                data = package_management.getTransactions(userId)
+            if transaction_management.checkjoin(userId):
+                data = transaction_management.getTransactions(userId)
                 # print(data)
                 message = "Date".ljust(40) + "Debit".ljust(20) + "Credit".ljust(20) + "Balance".ljust(20) + "Description".ljust(40) + "\n\n"
                 for i in range(len(data)):
@@ -379,28 +379,28 @@ def response(messageText, userId):
 
 
         elif tag == 'balance':
-            if package_management.checkjoin(userId):
-                balance = package_management.getAccBalance(userId)
+            if transaction_management.checkjoin(userId):
+                balance = transaction_management.getAccBalance(userId)
                 # print(balance)
                 return get_response(tag) + str(balance)
 
 
         elif tag == 'personal':
-            if package_management.checkjoin(userId):
-                tup = package_management.getpersonal(userId)
+            if transaction_management.checkjoin(userId):
+                tup = transaction_management.getpersonal(userId)
                 message = """Registered Name : """+tup['name']+"""\nUsername : """+tup['first_name']+"""\nAccount No : """+tup['accno']+"""\nBranch : """+tup['branch']+"""\nNIC : """+tup['nic']+"""\nEmail : """+tup['email']
                 return get_response(tag)+"\n\n"+message
 
 
         elif tag == 'name':
-            if package_management.checkjoin(userId):
-                name = package_management.getname(userId)
+            if transaction_management.checkjoin(userId):
+                name = transaction_management.getname(userId)
                 return get_response(tag) + name
 
         
         elif tag == 'account':
-            if package_management.checkjoin(userId):
-                tup = package_management.getpersonal(userId)
+            if transaction_management.checkjoin(userId):
+                tup = transaction_management.getpersonal(userId)
                 return get_response(tag) + tup['accno']
 
 
