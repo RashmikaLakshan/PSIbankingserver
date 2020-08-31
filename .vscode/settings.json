@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "D:\\semester 5\\software engineering project\\bankserver\\bankenv\\Scripts\\python",
+    "python.pythonPath": "D:\\semester 5\\software engineering project\\bankserver\\venv\\Scripts\\python",
     "python.testing.unittestArgs": [
         "-v",
         "-s",
